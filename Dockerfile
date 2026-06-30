@@ -1,14 +1,13 @@
-# Use Gradle with JDK 17
 FROM gradle:8.5-jdk17 AS build
 
 WORKDIR /app
 COPY . .
 
-RUN gradle build -x test
+RUN chmod +x gradlew
+RUN ./gradlew clean build -x test --no-daemon
 
-# Final lightweight image
 FROM eclipse-temurin:17-jdk
- 
+
 WORKDIR /app
 
 COPY --from=build /app/build/libs/*.jar app.jar
