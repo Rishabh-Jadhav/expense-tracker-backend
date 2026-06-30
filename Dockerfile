@@ -1,5 +1,4 @@
-# Build stage
-FROM gradle:8.8-jdk17 AS build
+FROM gradle:8.8-jdk25 AS build
 
 WORKDIR /app
 
@@ -9,8 +8,7 @@ RUN chmod +x gradlew
 
 RUN ./gradlew clean build -x test --no-daemon
 
-# Runtime stage
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:25-jre
 
 WORKDIR /app
 
@@ -18,4 +16,4 @@ COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
